@@ -19,19 +19,24 @@ public class FirstTest {
 	
 WebDriver driver;
 	
-	@BeforeTest
-	public void start()
-	{
-		DesiredCapabilities caps = new DesiredCapabilities();
-		caps.setCapability(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY, "lib/phantomjs.exe");
-		WebDriver driver = new PhantomJSDriver(caps);
+//	@BeforeTest
+	//public void start()
+	//{
+	//	DesiredCapabilities caps = new DesiredCapabilities();
+	//	caps.setCapability(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY, "lib/phantomjs.exe");
+	//	WebDriver driver = new PhantomJSDriver(caps);
 
-	}
+	//}
 	
 	@Test
 	public void firsttest()
 	{
+		DesiredCapabilities caps = new DesiredCapabilities();
+		caps.setCapability(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY, "lib/phantomjs");
+		driver = new PhantomJSDriver(caps);
+		
 		driver.get("https://www.google.com/");
+		
 		driver.close();
 		
 	}
