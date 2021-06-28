@@ -32,7 +32,7 @@ WebDriver driver;
 	public void firsttest()
 	{
 		DesiredCapabilities caps = new DesiredCapabilities();
-		caps.setCapability(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY, "lib/phantomjs");
+		caps.setCapability(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY, "lib/phantomjs.exe");
 		driver = new PhantomJSDriver(caps);
 		
 		driver.get("https://www.google.com/");
