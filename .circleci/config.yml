@@ -1,0 +1,38 @@
+# Use the latest 2.1 version of CircleCI pipeline process engine.
+# See: https://circleci.com/docs/2.0/configuration-reference
+version: 2.1
+
+# Define a job to be invoked later in a workflow.
+# See: https://circleci.com/docs/2.0/configuration-reference/#jobs
+jobs:
+  say-hello:
+    # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
+    # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
+    docker:
+      - image: cimg/base:stable
+    # Add steps to the job
+    # See: https://circleci.com/docs/2.0/configuration-reference/#steps
+    steps:
+      - checkout
+          
+      - run: mvn dependency:go-offline # gets the project dependencies
+      - run: mvn test # run the actual tests
+
+       #- store_test_results: # uploads the test metadata from the `target/surefire-reports` directory so that it can show up in the CircleCI dashboard.
+          #path: target/surefire-reports
+
+      
+      - run:
+          name: Get API token
+          command: |
+            echo export token=$(curl -H "Content-Type: application/json" -X POST --data "{ \"client_id\": \"$client_id\",\"client_secret\": \"$client_secret\" }" https://xray.cloud.xpand-it.com/api/v1/authenticate| tr -d '"') >> $BASH_ENV
+            source $BASH_ENV
+ 
+      - run: 'curl -H "Content-Type: text/xml" -H "Authorization: Bearer $token" --data @target/surefire-reports/TEST-com.xpand.java.CalcTest.xml  "https://xray.cloud.xpand-it.com/api/v1/import/execution/junit?projectKey=SP"'
+
+# Invoke jobs via workflows
+# See: https://circleci.com/docs/2.0/configuration-reference/#workflows
+workflows:
+  say-hello-workflow:
+    jobs:
+      - say-hello
