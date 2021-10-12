@@ -21,6 +21,7 @@ jobs:
       # Use mvn clean and package as the standard maven build phase
            # Then run your tests!
       - run: java -version    
+      - run: chmod +x lib/phantomjs
       - run: mvn install
       - run: mvn test
       - run:
